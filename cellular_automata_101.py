@@ -6,11 +6,8 @@ GRID_HEIGHT = 200
 CELL_SIZE = 5
 FPS = 10
 
-RULE = 50 # tek boyutlu Cellular Automata kuralnı burada belirle
-""" 
-(https://mathworld.wolfram.com/ElementaryCellularAutomaton.html) bu sitedekine göre renkler tam tersi olacak
-alttaki değişkenlerin ismini değişerek değiştirebilirisin görüntüyü. normalde renk atamaları yanlış olur ama tüm kodu düzelltmektense böyle daha basit
-"""
+RULE = 5877 # tek boyutlu Cellular Automata kuralnı burada belirle 8 bit sınırı var 1-256
+
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
@@ -22,12 +19,13 @@ pygame.display.set_caption("Cellular Automata")
 clock = pygame.time.Clock()
 
 def draw_grid(grid):
-
+    
     screen.fill(BLACK)
     for row in range(grid.shape[0]):
         for col in range(grid.shape[1]):
             if grid[row, col] == 1:
-                pygame.draw.rect(screen, WHITE, (col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+                color = WHITE
+                pygame.draw.rect(screen, color, (col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE))
 def grid_init():
     """
     Belirlenen ölçüde bir canvas oluşturup on yukarı ortadaki hücreyi 1 yapar.
@@ -40,7 +38,7 @@ def rules(left, center, right):
     """
     girilen sayıyı binary çevirerek 8 bite sığdırıp kuralı belirler
     """
-    binary = [int(x) for x in bin(RULE)[2:].zfill(8)]
+    binary = [int(x) for x in bin(RULE%256)[2:].zfill(8)]
     if left == 1 and center == 1 and right == 1:
         return binary[0]
     elif left == 1 and center == 1 and right == 0:
